@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.hpp                                         :+:      :+:    :+:   */
+/*   Sockets.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/15 15:10:00 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/01/15 15:10:56 by bmetehri         ###   ########.fr       */
+/*   Created: 2025/01/16 17:30:07 by bmetehri          #+#    #+#             */
+/*   Updated: 2025/01/16 17:33:13 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __SERVER_HPP__
-# define __SERVER_HPP__
-
-
-class Server {
+class Socket {
 	private:
 
 	public:
-};
 
-#endif
+};

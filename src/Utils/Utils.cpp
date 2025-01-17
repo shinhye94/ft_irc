@@ -1,16 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/15 13:30:41 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/01/17 14:45:06 by bmetehri         ###   ########.fr       */
+/*   Created: 2025/01/17 13:57:48 by bmetehri          #+#    #+#             */
+/*   Updated: 2025/01/17 14:46:24 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	main(void) {
+#include <iostream>
+#include "../../inc/Consts.hpp"
 
-	return (0);
+void	logInColor(char* color, std::string text)
+{
+	std::cout << color << text << RESET;
 }
