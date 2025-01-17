@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.hpp                                         :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:10:00 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/01/17 13:16:43 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/01/17 15:09:23 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class Server {
 	private:
 		int			_port;
 		std::vector<Client>	_clients;
+		std::vector<struct pollFd>	_pollFds;
 	public:
 };
 
