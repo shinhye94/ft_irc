@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:10:00 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/01/20 11:47:59 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/01/22 14:19:40 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,6 @@
 
 #include "Client.hpp"
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
-#include <csignal>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <fcntl.h>
-#include <poll.h>
-#include <unistd.h>
-#include <cstring>
 
 class Server {
 	private:
