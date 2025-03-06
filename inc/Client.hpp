@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:09:24 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/01/22 14:19:49 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/06 03:58:08 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,26 @@
 
 class Client {
 	private:
-		int						_fd;
-		struct sockaddr_in		address;
-		std::string				_username;
-		std::string				_nickname;
+		int								_socketFD;
+		std::string						_nickname;
+		std::string						_username;
+		bool							_authenticated;
 
 	public:
-		Client();
-		void initSock();
+										Client(int socketFD);
+										~Client( void );
 
+		int								getSocketFD( void ) const;
+		const std::string&				getNickname( void ) const;
+		void							setNickname(const std::string& nickname);
+		const std::string&				getUsername( void ) const;
+		void							setUsername(const std::string& username);
+		bool							isAuthenticated( void) const;
+		void							setAuthenticated(bool authenticated);
+
+		void							sendMessage(const std::string& message);
+		int								receiveData(char* buffer, int bufferSize);
+		void							disconnect( void );
 };
 
 #endif

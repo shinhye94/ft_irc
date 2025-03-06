@@ -6,7 +6,7 @@
 #    By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 13:33:10 by bmetehri          #+#    #+#              #
-#    Updated: 2025/01/17 15:06:08 by bmetehri         ###   ########.fr        #
+#    Updated: 2025/03/06 12:40:42 by bmetehri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,40 +16,62 @@
 #****************************************************************************#
 
 
+#****************************************************************************#
+#								VARIABLES									#
+#****************************************************************************#
+
+# Compiler
 CXX = c++
 
-CFLAGS = -Wall -Werror -Wextra -std=c++98 -Wshadow
+# Compilation flags with dependency generation
+CXXFLAGS = -Wall -Werror -Wextra -std=c++98 -Wshadow -MMD
 
+# Remove command
 RM = rm -rf
 
+# Include directories
 INCLUDE = inc
 INCLUDES = -I $(INCLUDE)
 
+# Object directory
 OBJ = obj/
 
+# Target executable
 TARGET = ircserv
-
 
 #****************************************************************************#
 #								SOURCES										#
 #****************************************************************************#
 
+# Source directories
 CLIENT_SRC = Client/
-CLIENT_FILES =	Client.cpp
-
 SERVER_SRC = Server/
-SERVER_FILES = Server.cpp
-
+CHANNEL_SRC = Channel/
 UTILS_SRC = Utils/
-UTILS_FILES =	Utils.cpp
-
 IRCSERV_SRC = src/
-IRCSERV_FILES = main.cpp	\
-				${addprefix ${SERVER_SRC}, ${SERVER_FILES}}	\
-				${addprefix ${CLIENT_SRC}, ${CLIENT_FILES}}	\
-				${addprefix ${UTILS_SRC}, ${UTILS_FILES}}
 
-IRCOBJ = ${addprefix ${OBJ}, ${IRCSERV_FILES:.cpp=.opp}}
+# Source files
+CLIENT_FILES = Client.cpp
+
+CHANNEL_FILES = Channel.cpp
+
+SERVER_FILES =		Server.cpp			\
+					HandleClient.cpp	\
+					HandleCommand.cpp	\
+					HandleMessage.cpp
+UTILS_FILES = Utils.cpp
+IRCSERV_FILES = main.cpp \
+                $(addprefix $(SERVER_SRC), $(SERVER_FILES)) \
+                $(addprefix $(CLIENT_SRC), $(CLIENT_FILES)) \
+				$(addprefix $(CHANNEL_SRC), $(CHANNEL_FILES)) \
+                $(addprefix $(UTILS_SRC), $(UTILS_FILES))
+
+# Object files
+IRCOBJ = $(addprefix $(OBJ), $(IRCSERV_FILES:.cpp=.opp))
+
+# Dependency files
+DEPS = $(IRCOBJ:.opp=.d)
+
 #****************************************************************************#
 #								COLORS										#
 #****************************************************************************#
@@ -83,32 +105,46 @@ define CYAN
 endef
 
 #****************************************************************************#
-#								REGLES										#
+#								RULES										#
 #****************************************************************************#
 
+# Phony targets
+.PHONY: all clean fclean re vg
+
+# Default target: build the executable
 all: $(TARGET)
 
+# Rule to link object files into the target executable
 $(TARGET): $(IRCOBJ)
-	$(call GREEN, "Compiling ft_irc...")
-	$(CXX) $(CFLAGS) $(IRCOBJ) $(INCLUDES) -o $(TARGET)
-	$(call GREEN, "ft_irc compiled!")
+	$(call GREEN, "Linking $(TARGET)...")
+	$(CXX) $(CXXFLAGS) $(IRCOBJ) $(INCLUDES) -o $(TARGET)
+	$(call GREEN, "$(TARGET) compiled successfully!")
 
+# Pattern rule to compile source files into object files
 $(OBJ)%.opp: $(IRCSERV_SRC)%.cpp
 	@mkdir -p $(@D)
 	$(call CYAN, "Compiling $<...")
-	@$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
+# Clean rule: remove object files and dependency files
 clean:
-	$(call RED, "Cleaning ft_irc object files...")
-	@$(RM) $(OBJ)
-	$(call RED, "ft_irc object files cleaned!")
+	$(call YELLOW, "Cleaning object files...")
+	$(RM) $(OBJ)
+	$(call YELLOW, "Object files cleaned!")
 
+# Full clean rule: remove object files, dependency files, and the executable
 fclean: clean
-	$(call RED, "Cleaning ft_irc...")
-	@$(RM) $(TARGET)
-	$(call RED, "ft_irc cleaned!")
+	$(call YELLOW, "Cleaning executable...")
+	$(RM) $(TARGET)
+	$(call YELLOW, "$(TARGET) cleaned!")
 
-vg: re
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=default.supp ./ircserv
-
+# Rebuild rule: clean everything and rebuild from scratch
 re: fclean all
+
+# Valgrind rule: rebuild and run the program under Valgrind
+vg: re
+	$(call RED, "Running Valgrind...")
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=default.supp ./$(TARGET)
+
+# Include dependency files
+-include $(DEPS)

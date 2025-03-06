@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 13:58:31 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/01/22 14:18:08 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:14:44 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # ifndef MAX_CLIENTS
 #  define MAX_CLIENTS 10
 # endif
+
+#define REUSEADDR_OPTION 1
 
 // ANSI color codes for debugging
 # define	RED		"\033[31m"
