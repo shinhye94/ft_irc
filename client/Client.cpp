@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 01:49:13 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/06 01:49:59 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/14 06:05:04 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	Client::handleUserInput() {
 
 void	Client::sendCommand(const std::string& command) {
 	if (_clientSocket != -1) {
-		if (Utils::sendData(_clientSocket, command + "\r\n") != 0) {
+		if (Utils::sendData(_clientSocket, command + "\n") != 0) {
 			std::cerr << "Error sending command to server." << std::endl;
 			close(_clientSocket);
 			_clientSocket = -1;

@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:01:58 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/10 11:07:39 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/14 06:31:53 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	Server::acceptNewClient( void ) {
 	_clients.insert(newClient);
 	_clientMap[newClientSocketFD] = newClient;
 
-	sendToClient(newClient, ":server NOTICE AUTH :*** Welcome to the IRC server.\r\n");
-	sendToClient(newClient, ":server NOTICE AUTH :*** Please enter password with PASS <password>\r\n");
+	sendToClient(newClient, ":server NOTICE AUTH :*** Welcome to the IRC server.\n");
+	sendToClient(newClient, ":server NOTICE AUTH :*** Please enter password with PASS <password>\n");
 
 	std::cout << "New client connected from " << inet_ntoa(clientAddress.sin_addr) << ":" << ntohs(clientAddress.sin_port) << std::endl;
 	Debug::clientEvent("Accepted new client", newClient);
@@ -84,7 +84,12 @@ void	Server::handleClientData(Client* client) {
 		while (std::getline(ss, line)) {
 			std::string trimmedLine = Utils::trimString(line);
 			Debug::printCommand(trimmedLine, client); // Debug command received
-			processCommand(client, Utils::trimString(line));
+			size_t last_valid = trimmedLine.find_last_not_of("\r\n");
+			if (last_valid != std::string::npos)
+				trimmedLine = trimmedLine.substr(0, last_valid + 1);
+			else
+				trimmedLine.clear(); // trimmedLine was all \r or \n
+			processCommand(client, trimmedLine);
 		}
 	} else if (bytesReceived == 0) {
 		std::cout << "Client disconnectd: " << client->getSocketFD() << std::endl;
@@ -113,7 +118,7 @@ void	Server::removeClient(Client* client) {
 			channel.removeUser(client);
 			if (!nickname.empty()) {
 				if (channel.getUserCount() > 0) {
-					broadcastToChannel(key, ":" + nickname + " PART " + key + "\r\n", client);
+					broadcastToChannel(key, ":" + nickname + " PART " + key + "\n", client);
 					Debug::channelEvent("Client PART broadcasted", &channel, client);
 				}
 			}

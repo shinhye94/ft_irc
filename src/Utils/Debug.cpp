@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 09:36:43 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/14 00:46:12 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/14 06:28:51 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,12 @@ namespace Debug {
 	}
 
 	void commandHandling(const std::string& command, const std::string& handler) {
+		std::string		copyCommand = command;
+		size_t last_valid = copyCommand.find_last_not_of("\r\n");
+		if (last_valid != std::string::npos)
+			copyCommand = copyCommand.substr(0, last_valid + 1);
+		else
+			copyCommand.clear(); // copyCommand was all \r or \n
 		if (currentDebugLevel & DEBUG_LEVEL_COMMAND) {
 			Colors::printColored(YELLOW, "[COMMAND HANDLER] ", false); // Use YELLOW directly
 			Colors::printColored(WHITE, "Command: " + command + ", Handler: " + handler, true); // Use WHITE directly
@@ -85,7 +91,7 @@ namespace Debug {
 	void printClientTable(const std::set<Client*>& clients) {
 		if (!(currentDebugLevel & DEBUG_LEVEL_TABLE)) return;
 
-		// clearScreen(); // Clear the console for table refresh
+		clearScreen(); // Clear the console for table refresh
 
 		Colors::printColored(YELLOW, "--- Connected Clients Table ---", true); // Use YELLOW directly
 		std::cout << CYAN << padRight("FD", 10) << padRight("Nickname", 20) << padRight("Username", 20) << padRight("Authenticated", 15) << RESET << std::endl; // Use CYAN and RESET directly
@@ -110,9 +116,15 @@ namespace Debug {
 
 	// --- Command Debug ---
 	void printCommand(const std::string& command, const Client* client) {
+		std::string		copyCommand = command;
+		size_t last_valid = copyCommand.find_last_not_of("\r\n");
+		if (last_valid != std::string::npos)
+			copyCommand = copyCommand.substr(0, last_valid + 1);
+		else
+			copyCommand.clear(); // copyCommand was all \r or \n
 		if (currentDebugLevel & DEBUG_LEVEL_COMMAND) {
 			Colors::printColored(GREEN, "[COMMAND RECEIVED] ", false); // Use GREEN directly
-			Colors::printColored(WHITE, "Command: " + command + ", Client FD: " + intToString(client->getSocketFD()) + ", Nick: " + client->getNickname(), true); // Use intToString and WHITE
+			Colors::printColored(WHITE, "Command: " + copyCommand + ", Client FD: " + intToString(client->getSocketFD()) + ", Nick: " + client->getNickname(), true); // Use intToString and WHITE
 		}
 	}
 

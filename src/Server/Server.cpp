@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 13:22:39 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/10 11:37:45 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/14 04:17:08 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	Server::run( void ) {
 	while (true) {
 		FD_ZERO(&_readfds);
 		FD_SET(_serverSocket, &_readfds);
-		FD_SET(STDIN_FILENO, &_readfds); // add stdin to watch for server commands
+		// FD_SET(STDIN_FILENO, &_readfds); // add stdin to watch for server commands
 
 		_fdMax = _serverSocket;
 		std::set<Client*>::iterator	it;
@@ -65,17 +65,17 @@ void	Server::run( void ) {
 			acceptNewClient();
 		}
 
-		if (FD_ISSET(STDIN_FILENO, &_readfds)) {
-			std::string	serverCommand;
-			std::getline(std::cin, serverCommand);
-			if (serverCommand == "shutdown") {
-				Debug::serverPhase("Shutdown command received from console.");
-				std::cout << "Server shutting down..." << std::endl;
-				break;
-			} else {
-				std::cout << "Unknown server command: " << serverCommand << std::endl;
-			}
-		}
+		// if (FD_ISSET(STDIN_FILENO, &_readfds)) {
+		// 	std::string	serverCommand;
+		// 	std::getline(std::cin, serverCommand);
+		// 	if (serverCommand == "shutdown") {
+		// 		Debug::serverPhase("Shutdown command received from console.");
+		// 		std::cout << "Server shutting down..." << std::endl;
+		// 		break;
+		// 	} else {
+		// 		std::cout << "Unknown server command: " << serverCommand << std::endl;
+		// 	}
+		// }
 
 		std::set<Client*>				clientsToRemove;
 		std::set<Client*>::iterator		iter;
@@ -96,13 +96,14 @@ void	Server::run( void ) {
 		}
 
 		// Periodically print client table (every 2 seconds for example)
-		time_t now;
-		time(&now); // Get current time
-		if (difftime(now, last_table_print_time) >= 2) { // Compare time difference in seconds
-			Debug::printClientTable(_clients);
-			time(&last_table_print_time); // Update last print time
-		}
-		usleep(50 * 1000); // Small sleep to reduce CPU usage (usleep in microseconds) - C++98 compatible replacement for std::this_thread::sleep_for
+		// time_t now;
+		// time(&now); // Get current time
+		// if (difftime(now, last_table_print_time) >= 2) { // Compare time difference in seconds
+		// 	Debug::printClientTable(_clients);
+		// 	time(&last_table_print_time); // Update last print time
+		// }
+		// usleep(50 * 1000); // Small sleep to reduce CPU usage (usleep in microseconds) - C++98 compatible replacement for std::this_thread::sleep_for
 	}
 	Debug::serverPhase("Exiting main server loop.");
 }
+

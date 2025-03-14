@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:30:41 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/10 11:30:20 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/14 06:05:04 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ int	main(int argc, char **argv) {
 		std::cerr << Colors::returnColored(RED, "Error: Wrong arguments! Starting with default server \
 config", NEWLINE);
 		return (1);
+	} else {
+		port = atoi(argv[1]);
+		password = argv[2];
 	}
 	// Constructing the basic server class
 	Server	server(port, password);
@@ -63,7 +66,7 @@ config", NEWLINE);
  * instead fo the current _channel in server.cpp
  *
  * 		* adjust socket problem when occupeing port and not releaseing it
- * 		* adjust nickname \r\n prblem.
+ * 		* adjust nickname \n prblem.
  * 		* utilise de rawlog debuging method
  *
  * 		* add more functionnalities:
