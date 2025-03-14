@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 09:36:43 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/14 06:28:51 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/14 08:18:49 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ namespace Debug {
 	void clientEvent(const std::string& event, const Client* client) {
 		if (currentDebugLevel & DEBUG_LEVEL_INFO) {
 			Colors::printColored(BLUE, "[CLIENT EVENT] ", false); // Use BLUE directly
-			Colors::printColored(WHITE, event + " - FD: " + intToString(client->getSocketFD()) + ", Nick: " + client->getNickname(), true); // Use intToString and WHITE
+			if (client != NULL)
+				Colors::printColored(WHITE, event + " - FD: " + intToString(client->getSocketFD()) + ", Nick: " + client->getNickname(), true); // Use intToString and WHITE
+			else
+				Colors::printColored(WHITE, event, true);
 		}
 	}
 
@@ -91,7 +94,7 @@ namespace Debug {
 	void printClientTable(const std::set<Client*>& clients) {
 		if (!(currentDebugLevel & DEBUG_LEVEL_TABLE)) return;
 
-		clearScreen(); // Clear the console for table refresh
+		// clearScreen(); // Clear the console for table refresh
 
 		Colors::printColored(YELLOW, "--- Connected Clients Table ---", true); // Use YELLOW directly
 		std::cout << CYAN << padRight("FD", 10) << padRight("Nickname", 20) << padRight("Username", 20) << padRight("Authenticated", 15) << RESET << std::endl; // Use CYAN and RESET directly

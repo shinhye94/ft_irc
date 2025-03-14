@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:10:00 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/06 12:47:04 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/14 08:40:12 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ class Server {
 		std::map<int, Client*>					_clientMap;
 
 		std::map<std::string, Channel>			_channels;		// channels name -> set of clients sockets
+
+		bool									_removeTrigger;
 
 		fd_set									_readfds;		// master set for select()
 		int										_fdMax;			// highest file descriptor number

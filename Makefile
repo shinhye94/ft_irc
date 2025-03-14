@@ -6,7 +6,7 @@
 #    By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 13:33:10 by bmetehri          #+#    #+#              #
-#    Updated: 2025/03/10 09:43:37 by bmetehri         ###   ########.fr        #
+#    Updated: 2025/03/14 06:57:53 by bmetehri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -148,7 +148,7 @@ re: fclean all
 # Valgrind rule: rebuild and run the program under Valgrind
 vg: re
 	$(call RED, "Running Valgrind...")
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=default.supp ./$(TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(TARGET) 5555 pass123
 
 # Include dependency files
 -include $(DEPS)

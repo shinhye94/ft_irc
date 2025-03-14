@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:02:21 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/14 06:26:42 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/14 08:40:46 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,7 +316,8 @@ void	Server::handlePRIVMSG(Client* client, const std::vector<std::string>& param
 void	Server::handleQUIT(Client* client) {
 	Debug::commandHandling("QUIT", "Handling QUIT command");
 	sendToClient(client, ":server NOTICE :Closing connection\n");
-	removeClient(client);
+	// removeClient(client);
+	_removeTrigger = true;
 	Debug::commandHandling("QUIT command completed", "");
 }
 
