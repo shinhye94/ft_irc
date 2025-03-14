@@ -6,24 +6,57 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:30:41 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/06 01:31:37 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/10 11:30:20 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/Server.hpp"
+#include "../inc/Debug.hpp"
+
 
 #include <iostream>
 #include <sstream>
 
-int	main(void) {
-	int	port = 5557;
-	std::string	password = "password123";
-
-	Server	server(port, password);
-	server.run();
-	return (0);
+static bool	worngArgs(int argc, char**argv) {
+	if (argc != 3) {
+		std::cerr << Colors::returnColored(YELLOW, "Warning: Wrong number of arguments!", NEWLINE);
+		return (true);
+	}
+	int	port;
+	port = atoi(argv[1]);
+	if (port <= 0) {
+		std::cerr << Colors::returnColored(YELLOW, "Warning: port number is invalid or occupied please \
+					use another one above 2000", NEWLINE);
+					return (true);
+	}
+	std::ostringstream	oss;
+	oss << argv[2];
+	if (oss.str() == "") {
+		std::cerr << Colors::returnColored(YELLOW, "Warning: Password cannot be empty", NEWLINE);
+		return (true);
+	}
+	return (false);
 }
 
+int	main(int argc, char **argv) {
+	// default port and password
+	int	port = 5555;
+	std::string	password = "pass123";
+
+	// checking all args and other
+	if (worngArgs(argc, argv)) {
+		std::cerr << Colors::returnColored(RED, "Error: Wrong arguments! Starting with default server \
+config", NEWLINE);
+		return (1);
+	}
+	// Constructing the basic server class
+	Server	server(port, password);
+	// runing the server and doing all the stuff
+	Debug::serverPhase("Starting IRC Server...");
+	server.run();
+	Debug::serverPhase("IRC Server finished.");
+	return (0);
+}
 /**
  * @todo
  * 		* change the base strucut: add a channel.hpp & client.hpp and channel.cpp & client.cpp and implement them

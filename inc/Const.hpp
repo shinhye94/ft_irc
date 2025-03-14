@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 13:58:31 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/06 10:14:44 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/10 09:50:57 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 # ifndef MAX_CLIENTS
 #  define MAX_CLIENTS 10
 # endif
+
+
+# define	NEWLINE		true
+# define	NOBEWLINE	false
 
 #define REUSEADDR_OPTION 1
 

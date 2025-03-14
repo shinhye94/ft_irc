@@ -6,7 +6,7 @@
 #    By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 13:33:10 by bmetehri          #+#    #+#              #
-#    Updated: 2025/03/06 12:40:42 by bmetehri         ###   ########.fr        #
+#    Updated: 2025/03/10 09:43:37 by bmetehri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,11 @@ SERVER_FILES =		Server.cpp			\
 					HandleClient.cpp	\
 					HandleCommand.cpp	\
 					HandleMessage.cpp
-UTILS_FILES = Utils.cpp
+
+UTILS_FILES =		Utils.cpp			\
+					Colors.cpp			\
+					Debug.cpp
+
 IRCSERV_FILES = main.cpp \
                 $(addprefix $(SERVER_SRC), $(SERVER_FILES)) \
                 $(addprefix $(CLIENT_SRC), $(CLIENT_FILES)) \

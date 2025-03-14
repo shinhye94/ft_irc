@@ -6,30 +6,40 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 13:22:39 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/06 12:00:37 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/10 11:37:45 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/Server.hpp"
+#include "../../inc/Debug.hpp"
 
-		Server::Server( int port, const std::string& password ) : _portNumber(port), _serverPassword(password) {};
+		Server::Server( int port, const std::string& password ) : _portNumber(port), _serverPassword(password) {
+			Debug::serverPhase("FT_IRC_Server instance created.");
+		};
 
 		Server::~Server( void ) {
-			if (_serverSocket != -1)
+			Debug::serverPhase("FT_IRC_Server instance destroyed.");
+			if (_serverSocket != -1) {
 				close(_serverSocket);
-
+				Debug::serverPhase("Server socket closed.");
+			}
 			std::set<Client*>::iterator	it;
 			for (it = _clients.begin(); it != _clients.end(); it++) {
 				Client* currentClient = *it;
 				currentClient->disconnect();
 				delete currentClient;
 			}
+			Debug::serverPhase("All clients disconnected and resources cleaned.");
 		}
 
 void	Server::run( void ) {
 	setupServerSocket();
+	Debug::serverPhase("Entering main server loop.");
 
 	_fdMax = _serverSocket;
+
+	time_t last_table_print_time; // Changed to time_t
+	time(&last_table_print_time); // Initialize last_table_print_time
 
 	while (true) {
 		FD_ZERO(&_readfds);
@@ -59,6 +69,7 @@ void	Server::run( void ) {
 			std::string	serverCommand;
 			std::getline(std::cin, serverCommand);
 			if (serverCommand == "shutdown") {
+				Debug::serverPhase("Shutdown command received from console.");
 				std::cout << "Server shutting down..." << std::endl;
 				break;
 			} else {
@@ -83,5 +94,15 @@ void	Server::run( void ) {
 			Client* currentClient = *iterr;
 			removeClient(currentClient);
 		}
+
+		// Periodically print client table (every 2 seconds for example)
+		time_t now;
+		time(&now); // Get current time
+		if (difftime(now, last_table_print_time) >= 2) { // Compare time difference in seconds
+			Debug::printClientTable(_clients);
+			time(&last_table_print_time); // Update last print time
+		}
+		usleep(50 * 1000); // Small sleep to reduce CPU usage (usleep in microseconds) - C++98 compatible replacement for std::this_thread::sleep_for
 	}
+	Debug::serverPhase("Exiting main server loop.");
 }

@@ -6,13 +6,15 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:01:58 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/06 12:53:52 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/10 11:07:39 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/Server.hpp"
+#include "../../inc/Debug.hpp"
 
 void	Server::setupServerSocket( void ) {
+	Debug::serverPhase("Setting up server socket...");
 	_serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if (_serverSocket == -1){
 		perror("Error: server: Couldn't create server socket\n");
@@ -48,6 +50,7 @@ void	Server::setupServerSocket( void ) {
 	}
 
 	std::cout << "ft_irc Server listening on port: " << _portNumber << std::endl;
+	Debug::serverPhase("Server socket setup complete. Listening on port " + Debug::intToString(_portNumber));
 }
 
 void	Server::acceptNewClient( void ) {
@@ -67,6 +70,7 @@ void	Server::acceptNewClient( void ) {
 	sendToClient(newClient, ":server NOTICE AUTH :*** Please enter password with PASS <password>\r\n");
 
 	std::cout << "New client connected from " << inet_ntoa(clientAddress.sin_addr) << ":" << ntohs(clientAddress.sin_port) << std::endl;
+	Debug::clientEvent("Accepted new client", newClient);
 }
 
 void	Server::handleClientData(Client* client) {
@@ -78,13 +82,17 @@ void	Server::handleClientData(Client* client) {
 		std::stringstream	ss(receivedData);
 		std::string			line;
 		while (std::getline(ss, line)) {
+			std::string trimmedLine = Utils::trimString(line);
+			Debug::printCommand(trimmedLine, client); // Debug command received
 			processCommand(client, Utils::trimString(line));
 		}
 	} else if (bytesReceived == 0) {
 		std::cout << "Client disconnectd: " << client->getSocketFD() << std::endl;
+		Debug::clientEvent("Disconnected (recv 0 bytes)", client);
 		removeClient(client);
 	} else {
 		perror("Error: receiveData Internal error\n");
+		Debug::clientEvent("Receive data error", client);
 		removeClient(client);
 	}
 }
@@ -95,6 +103,8 @@ void	Server::removeClient(Client* client) {
 	int clientSocketFD = client->getSocketFD();
 	std::string		nickname = getClientNickname(client);
 	std::cout << "Removing client " << clientSocketFD << (nickname.empty() ? " " : " Nickname: " + nickname + " )") << std::endl;
+	Debug::clientEvent("Removing client", client);
+
 	std::map<std::string, Channel>::iterator it;
 	for (it = _channels.begin(); it != _channels.end(); it++) {
 		const std::string& key = it->first;
@@ -104,13 +114,16 @@ void	Server::removeClient(Client* client) {
 			if (!nickname.empty()) {
 				if (channel.getUserCount() > 0) {
 					broadcastToChannel(key, ":" + nickname + " PART " + key + "\r\n", client);
+					Debug::channelEvent("Client PART broadcasted", &channel, client);
 				}
 			}
+			Debug::channelEvent("Client removed from channel", &channel, client);
 		}
 	}
 	_clients.erase(client);
 	_clientMap.erase(clientSocketFD);
 	delete client;
+	Debug::clientEvent("Client resources released", NULL);
 }
 
 
