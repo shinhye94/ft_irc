@@ -6,7 +6,7 @@
 #    By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 13:33:10 by bmetehri          #+#    #+#              #
-#    Updated: 2025/03/14 06:57:53 by bmetehri         ###   ########.fr        #
+#    Updated: 2025/03/15 21:30:21 by bmetehri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,9 +56,23 @@ CLIENT_FILES = Client.cpp
 CHANNEL_FILES = Channel.cpp
 
 SERVER_FILES =		Server.cpp			\
-					HandleClient.cpp	\
-					HandleCommand.cpp	\
-					HandleMessage.cpp
+					HandleAClient.cpp	\
+					HandleACommand.cpp	\
+					HandleAMessage.cpp	\
+					HandleINVITE.cpp	\
+					HandleJOIN.cpp		\
+					HandleKICK.cpp		\
+					HandleMODE.cpp		\
+					HandleNICK.cpp		\
+					HandlePART.cpp		\
+					HandlePASS.cpp		\
+					HandlePING.cpp		\
+					HandlePRIVMSG.cpp	\
+					HandleQUIT.cpp		\
+					handleTOPIC.cpp		\
+					HandleUSER.cpp		\
+					HandleWHO.cpp		\
+					HandleWHOIS.cpp
 
 UTILS_FILES =		Utils.cpp			\
 					Colors.cpp			\
