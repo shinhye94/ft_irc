@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:02:21 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/14 08:40:46 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/15 14:40:37 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ void	Server::handleJOIN(Client* client, const std::vector<std::string>& params) 
 	if (!channelPtr) {
 		_channels.insert(std::pair<std::string, Channel>(channelName, Channel(channelName))); // Create new channel if it doesn't exist. - explicit std::pair
 		channelPtr = findChannel(channelName); // Retrieve the newly created channel.
+		channelPtr->setJustCreated(true);
 		Debug::channelEvent("Channel created", channelPtr);
 	}
 
@@ -215,7 +216,10 @@ void	Server::handleJOIN(Client* client, const std::vector<std::string>& params) 
 			 return;
 		 }
 	}
-	channel.clearInvites(); // Clear invite status upon successful join.
+	if (channel.getUserCount() == 1 && channel.getJustCreated() && channel.hasUser(client))
+		channel.addOperator(client);
+
+ 	channel.clearInvites(); // Clear invite status upon successful join.
 	Debug::channelEvent("Client joined channel", &channel, client);
 
 
@@ -269,7 +273,8 @@ void	Server::handlePART(Client* client, const std::vector<std::string>& params) 
 	Debug::channelEvent("Client parted channel", &channel, client);
 
 	if (channel.getUserCount() == 0) {
-		_channels.erase(channelName); // Remove channel if empty
+		// _channels.erase(channelName); // Remove channel if empty
+		channel.setRemoveSituation(true);
 		Debug::channelEvent("Channel removed as it became empty", &channel);
 	}
 	Debug::channelEvent("PART command completed", &channel, client);

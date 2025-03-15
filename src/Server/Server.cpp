@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 13:22:39 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/14 08:41:20 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/15 03:03:20 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	Server::run( void ) {
 				handleClientData(currentClient);
 				if ((FD_ISSET(currentClient->getSocketFD(), &_readfds) && errno == ECONNRESET) || _removeTrigger) {
 					clientsToRemove.insert(currentClient);
+					_removeTrigger = false;
 				}
 			}
 		}
@@ -93,6 +94,27 @@ void	Server::run( void ) {
 		for (iterr = clientsToRemove.begin(); iterr != clientsToRemove.end(); iterr++) {
 			Client* currentClient = *iterr;
 			removeClient(currentClient);
+		}
+
+		std::map<std::string, Channel>::iterator iterCH = _channels.begin();
+		std::map<std::string, Channel>::iterator tmp;
+		// for (iterCH = _channels.begin(); iterCH != _channels.end(); iterCH++) {
+		// 	tmp = iterCH;
+		// 	tmp++;
+		// 	Channel&	channel = iterCH->second;
+		// 	if (channel.isToBeRemoved())
+		// 		_channels.erase(channel.getName());
+		// }
+		while (iterCH != _channels.end()) {
+			tmp = iterCH;
+			tmp++;
+			Channel&	channel = iterCH->second;
+			if (channel.isToBeRemoved()) {
+				_channels.erase(channel.getName());
+				iterCH = tmp;
+				continue;
+			}
+			iterCH++;
 		}
 
 		// Periodically print client table (every 2 seconds for example)

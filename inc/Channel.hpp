@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:12:59 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/06 12:56:58 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/15 14:24:57 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@ class Channel {
 		std::string					_topic;
 		bool						_topicLocked;
 		bool						_inviteOnly;
+		bool						_toBeRemoved;
+		bool						_justCreated;
 		std::string					_key;
 		size_t							_userLimit;
 		std::set<std::string>		_invitedUsers;
+
 
 	public:
 									Channel(const std::string& name);
@@ -69,6 +72,12 @@ class Channel {
 		bool						isInvited(const std::string& nickname) const;
 		void						inviteUser(const std::string& nickname);
 		void						clearInvites();
+
+		bool						isToBeRemoved() const;
+		void						setRemoveSituation(bool removeSituation);
+
+		bool						getJustCreated() const;
+		void						setJustCreated(bool justCreatedOrNot);
 };
 
 

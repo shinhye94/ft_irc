@@ -6,14 +6,14 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 01:44:40 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/06 12:57:45 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/15 14:25:43 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/Channel.hpp"
 #include "../../inc/Client.hpp"
 
-								Channel::Channel(const std::string& name) : _name(name), _topic(""), _topicLocked(false), _inviteOnly(false), _key(""), _userLimit(0) {};
+								Channel::Channel(const std::string& name) : _name(name), _topic(""), _topicLocked(false), _inviteOnly(false), _toBeRemoved(false), _key(""), _userLimit(0) {};
 
 								Channel::~Channel() {};
 
@@ -148,4 +148,20 @@ void							Channel::inviteUser(const std::string& nickname) {
 
 void							Channel::clearInvites( void ) {
 	_invitedUsers.clear();
+}
+
+bool							Channel::isToBeRemoved() const {
+	return (this->_toBeRemoved);
+}
+
+void							Channel::setRemoveSituation(bool removeSituation) {
+	this->_toBeRemoved = removeSituation;
+}
+
+bool							Channel::getJustCreated() const {
+	return (this->_justCreated);
+}
+
+void							Channel::setJustCreated(bool justCreatedOrNot) {
+	this->_justCreated = justCreatedOrNot;
 }

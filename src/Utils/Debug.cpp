@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 09:36:43 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/14 08:18:49 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/15 02:27:01 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,11 @@ namespace Debug {
 	void channelEvent(const std::string& event, const Channel* channel, const Client* client) {
 		if (currentDebugLevel & DEBUG_LEVEL_CHANNEL) {
 			Colors::printColored(MAGENTA, "[CHANNEL EVENT] ", false); // Use MAGENTA directly
-			std::string clientInfo = client ? "Client Nick: " + client->getNickname() + ", FD: " + intToString(client->getSocketFD()) : "N/A"; // Use intToString
-			Colors::printColored(WHITE, event + " - Channel: " + channel->getName() + ", " + clientInfo, true); // Use WHITE directly
+			if (channel != NULL && client != NULL) {
+				std::string clientInfo = client ? "Client Nick: " + client->getNickname() + ", FD: " + intToString(client->getSocketFD()) : "N/A"; // Use intToString
+				Colors::printColored(WHITE, event + " - Channel: " + channel->getName() + ", " + clientInfo, true); // Use WHITE directly
+			} else
+				Colors::printColored(WHITE, event, true);
 		}
 	}
 
