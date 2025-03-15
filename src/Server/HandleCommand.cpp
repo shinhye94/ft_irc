@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:02:21 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/15 14:40:37 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/15 16:41:10 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ void	Server::processCommand(Client* client, const std::string& commandLine) {
 
 	if (command == "PASS") {
 		handlePASS(client, params);
-	// } else if (!isClientAuthenticated(client)) {
-	// 	sendToClient(client, ":server 451 " + (getClientNickname(client).empty() ? "*" : getClientNickname(client)) + " :You have not registered\n"); // ERR_NOTREGISTERED
-	// 	return; // Ignore further commands until authenticated.
+	} else if (!isClientAuthenticated(client)) {
+		sendToClient(client, ":server 451 " + (getClientNickname(client).empty() ? "*" : getClientNickname(client)) + " :You have not registered\n"); // ERR_NOTREGISTERED
+		return; // Ignore further commands until authenticated.
 	} else if (command == "NICK") {
 		handleNICK(client, params);
 	} else if (command == "USER") {
@@ -92,7 +92,8 @@ void 	Server::handlePASS(Client* client, const std::vector<std::string>& params)
 	} else {
 		sendToClient(client, ":server 464 * :Password incorrect\n"); //ERR_PASSWDMISMATCH
 		Debug::commandHandling("PASS", "Password incorrect - Disconnecting client");
-		removeClient(client); // Disconnect client on wrong password
+		// removeClient(client); // Disconnect client on wrong password
+		_removeTrigger = true;
 	}
 }
 
