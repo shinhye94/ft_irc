@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:02:21 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/16 05:43:10 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/16 17:09:44 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,13 @@ void	Server::processCommand(Client* client, const std::string& commandLine) {
 
 	Debug::commandHandling(commandLine, "Processing Command");
 
-	if (command == "PASS") {
+	if (command == "CAP") {
+		Debug::commandHandling("CAP", "received");
+	} else if (command == "PASS") {
 		handlePASS(client, params);
 	} else if (!isClientAuthenticated(client)) {
 		sendToClient(client, ":server 451 " + (getClientNickname(client).empty() ? "*" : getClientNickname(client)) + " :You have not registered\n"); // ERR_NOTREGISTERED
-		// _removeTrigger = true;
+		_removeTrigger = true;
 		return; // Ignore further commands until authenticated.
 	} else if (command == "NICK") {
 		handleNICK(client, params);
