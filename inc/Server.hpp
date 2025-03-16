@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:10:00 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/14 08:40:12 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/16 05:39:32 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ class Server {
 		std::string								getClientNickname( Client* client );
 		bool									isNicknameInUse( const std::string& nickname );
 		bool									isClientAuthenticated( Client* client );
-		bool									authenticateClient( Client* client, const std::string& passwordAttempt );
+		bool									authenticateClient(const std::string& passwordAttempt );
 
 	public:
 												Server( int port, const std::string& password );

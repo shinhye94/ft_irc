@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HandleMessage.cpp                                  :+:      :+:    :+:   */
+/*   HandleAMessage.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:02:43 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/06 12:36:29 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/16 05:39:17 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,7 @@ void	Server::sendToClient(Client* client, const std::string& message) {
 	}
 }
 
-static void		someFunction(Client* client) {
-	(void)client; // Mark as intentionally unused
-}
-bool	Server::authenticateClient(Client* client, const std::string& passwordAttempt) {
-	someFunction(client);
+bool	Server::authenticateClient(const std::string& passwordAttempt) {
 	return (passwordAttempt == _serverPassword); // Simple password check
 }
 
