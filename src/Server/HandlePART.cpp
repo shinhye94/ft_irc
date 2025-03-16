@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 21:08:11 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/15 21:13:47 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/16 03:48:46 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ void	Server::handlePART(Client* client, const std::vector<std::string>& params) 
 
 	channel.removeUser(client);
 	std::string nickname = getClientNickname(client);
+	std::string username = client->getUsername();
 
 	broadcastToChannel(channelName, ":" + nickname + " PART " + channelName + "\n", client);
-	sendToClient(client, ":" + nickname + " PART " + channelName + "\n");
+	// sendToClient(client, ":" + nickname + " PART " + channelName + "\n");
+	sendToClient(client, ":" + nickname + "!" + username + "@server" + " PART " + channelName + "\n");
 	Debug::channelEvent("Client parted channel", &channel, client);
 
 	if (channel.getUserCount() == 0) {

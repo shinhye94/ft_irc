@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handlePASS.cpp                                     :+:      :+:    :+:   */
+/*   HandlePASS.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 21:04:33 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/15 21:05:09 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/16 03:24:03 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void 	Server::handlePASS(Client* client, const std::vector<std::string>& params)
 	} else {
 		sendToClient(client, ":server 464 * :Password incorrect\n"); //ERR_PASSWDMISMATCH
 		Debug::commandHandling("PASS", "Password incorrect - Disconnecting client");
-		removeClient(client); // Disconnect client on wrong password
-		// _removeTrigger = true;
+		// removeClient(client); // Disconnect client on wrong password
+		_removeTrigger = true;
 	}
 }

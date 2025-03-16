@@ -6,7 +6,7 @@
 #    By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/15 13:33:10 by bmetehri          #+#    #+#              #
-#    Updated: 2025/03/15 21:30:21 by bmetehri         ###   ########.fr        #
+#    Updated: 2025/03/15 23:34:12 by bmetehri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,10 +79,10 @@ UTILS_FILES =		Utils.cpp			\
 					Debug.cpp
 
 IRCSERV_FILES = main.cpp \
-                $(addprefix $(SERVER_SRC), $(SERVER_FILES)) \
-                $(addprefix $(CLIENT_SRC), $(CLIENT_FILES)) \
+				$(addprefix $(SERVER_SRC), $(SERVER_FILES)) \
+				$(addprefix $(CLIENT_SRC), $(CLIENT_FILES)) \
 				$(addprefix $(CHANNEL_SRC), $(CHANNEL_FILES)) \
-                $(addprefix $(UTILS_SRC), $(UTILS_FILES))
+				$(addprefix $(UTILS_SRC), $(UTILS_FILES))
 
 # Object files
 IRCOBJ = $(addprefix $(OBJ), $(IRCSERV_FILES:.cpp=.opp))
