@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:09:24 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/06 03:58:08 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/18 00:44:35 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ class Client {
 		std::string						_nickname;
 		std::string						_username;
 		bool							_authenticated;
+
+		bool						_toBeRemoved;
 
 	public:
 										Client(int socketFD);
@@ -36,6 +38,9 @@ class Client {
 		void							sendMessage(const std::string& message);
 		int								receiveData(char* buffer, int bufferSize);
 		void							disconnect( void );
+
+		bool							isToBeRemoved() const;
+		void							setRemoveSituation(bool removeSituation);
 };
 
 #endif

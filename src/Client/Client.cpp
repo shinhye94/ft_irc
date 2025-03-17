@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 13:21:59 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/06 04:14:28 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/18 00:53:58 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../inc/Client.hpp"
 
 
-								Client::Client(int socketFD) : _socketFD(socketFD), _nickname(""), _username(""), _authenticated(false) {};
+								Client::Client(int socketFD) : _socketFD(socketFD), _nickname(""), _username(""), _authenticated(false), _toBeRemoved(false) {};
 
 								Client::~Client( void ) {};
 
@@ -57,4 +57,13 @@ int								Client::receiveData(char* buffer, int bufferSize) {
 void							Client::disconnect() {
 	close(_socketFD);
 	_socketFD = -1;
+}
+
+
+bool							Client::isToBeRemoved() const {
+	return (this->_toBeRemoved);
+}
+
+void							Client::setRemoveSituation(bool removeSituation) {
+	this->_toBeRemoved = removeSituation;
 }

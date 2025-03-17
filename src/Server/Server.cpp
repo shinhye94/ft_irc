@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 13:22:39 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/15 03:03:20 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/18 00:47:43 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,12 @@ void	Server::run( void ) {
 		std::set<Client*>::iterator	it;
 		for (it = _clients.begin(); it != _clients.end(); it++){
 			Client* currentClient = *it;
-			FD_SET(currentClient->getSocketFD(), &_readfds);
-			if (currentClient->getSocketFD() > _fdMax) {
-				_fdMax = currentClient->getSocketFD();
-			}
+			if (currentClient) { //tmp
+				FD_SET(currentClient->getSocketFD(), &_readfds);
+				if (currentClient->getSocketFD() > _fdMax) {
+					_fdMax = currentClient->getSocketFD();
+				}
+			} //tmp
 		}
 
 		if (select(_fdMax + 1, &_readfds, 0, 0, 0) < 0) {
@@ -81,13 +83,15 @@ void	Server::run( void ) {
 		std::set<Client*>::iterator		iter;
 		for (iter = _clients.begin(); iter != _clients.end(); iter++) {
 			Client* currentClient = *iter;
-			if (FD_ISSET(currentClient->getSocketFD(), &_readfds)) {
-				handleClientData(currentClient);
-				if ((FD_ISSET(currentClient->getSocketFD(), &_readfds) && errno == ECONNRESET) || _removeTrigger) {
-					clientsToRemove.insert(currentClient);
-					_removeTrigger = false;
+			if (currentClient) { //tmp
+				if (FD_ISSET(currentClient->getSocketFD(), &_readfds)) {
+					handleClientData(currentClient);
+					if ((FD_ISSET(currentClient->getSocketFD(), &_readfds) && errno == ECONNRESET) || currentClient->isToBeRemoved()) {
+						clientsToRemove.insert(currentClient);
+						_removeTrigger = false;
+					}
 				}
-			}
+			} //tmp
 		}
 
 		std::set<Client*>::iterator	iterr;

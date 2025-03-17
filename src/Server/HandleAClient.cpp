@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HandleClient.cpp                                   :+:      :+:    :+:   */
+/*   HandleAClient.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:01:58 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/14 08:16:13 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/18 00:45:53 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,13 @@ void	Server::handleClientData(Client* client) {
 	} else if (bytesReceived == 0) {
 		std::cout << "Client disconnectd: " << client->getSocketFD() << std::endl;
 		Debug::clientEvent("Disconnected (recv 0 bytes)", client);
-		removeClient(client);
+		// removeClient(client);
+		client->setRemoveSituation(true);
 	} else {
 		perror("Error: receiveData Internal error\n");
 		Debug::clientEvent("Receive data error", client);
-		removeClient(client);
+		// removeClient(client);
+		client->setRemoveSituation(true);
 	}
 }
 
