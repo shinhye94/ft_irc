@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:02:21 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/18 00:48:14 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/18 07:09:56 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	Server::processCommand(Client* client, const std::string& commandLine) {
 	}
 
 	Debug::commandHandling(commandLine, "Processing Command");
-
+	_currentCommand = commandLine;
 	if (command == "CAP") {
 		Debug::commandHandling("CAP", "received");
 	} else if (command == "PASS") {
@@ -74,6 +74,8 @@ void	Server::processCommand(Client* client, const std::string& commandLine) {
 		handleINVITE(client, params);
 	} else if (command == "TOPIC") {
 		handleTOPIC(client, params);
+	} else if (command == "") {
+		Debug::commandHandling("Empty command (\"\")", "received");
 	}
 	else {
 		sendToClient(client, ":server 421 " + (getClientNickname(client).empty() ? "*" : getClientNickname(client)) + " " + command + " :Unknown command\n"); //ERR_UNKNOWNCOMMAND

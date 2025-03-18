@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:01:58 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/18 00:45:53 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/18 06:59:51 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,15 @@ void	Server::handleClientData(Client* client) {
 	int		bytesReceived = client->receiveData(buffer, sizeof(buffer));
 
 	if (bytesReceived > 0) {
-		std::string			receivedData(buffer);
-		std::stringstream	ss(receivedData);
-		std::string			line;
-		while (std::getline(ss, line)) {
+		std::string receivedData(buffer, bytesReceived); // Use the actual number of bytes received
+		client->appendToBuffer(receivedData); // Append to the client's buffer
+
+		std::string clientBuffer = client->getBuffer();
+		size_t newlinePos;
+		while ((newlinePos = clientBuffer.find('\n')) != std::string::npos) {
+			std::string line = clientBuffer.substr(0, newlinePos);
+			clientBuffer.erase(0, newlinePos + 1); // Remove the processed line from the buffer
+
 			std::string trimmedLine = Utils::trimString(line);
 			Debug::printCommand(trimmedLine, client); // Debug command received
 			size_t last_valid = trimmedLine.find_last_not_of("\r\n");
@@ -90,6 +95,8 @@ void	Server::handleClientData(Client* client) {
 			else
 				trimmedLine.clear(); // trimmedLine was all \r or \n
 			processCommand(client, trimmedLine);
+			client->setBuffer(clientBuffer); // Update the client's buffer
+			clientBuffer = client->getBuffer(); // Re-fetch the updated buffer
 		}
 	} else if (bytesReceived == 0) {
 		std::cout << "Client disconnectd: " << client->getSocketFD() << std::endl;

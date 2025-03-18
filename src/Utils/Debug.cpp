@@ -6,12 +6,13 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 09:36:43 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/15 02:27:01 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/18 02:48:29 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../inc/Debug.hpp"
+
 #include <sstream>
 
 namespace Debug {
@@ -134,4 +135,4 @@ namespace Debug {
 		}
 	}
 
-	} // namespace Debug
+} // namespace Debug

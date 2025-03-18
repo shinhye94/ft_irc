@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:30:41 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/14 06:05:04 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/18 08:56:29 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <iostream>
 #include <sstream>
 
+
 static bool	worngArgs(int argc, char**argv) {
 	if (argc != 3) {
 		std::cerr << Colors::returnColored(YELLOW, "Warning: Wrong number of arguments!", NEWLINE);
@@ -24,14 +25,27 @@ static bool	worngArgs(int argc, char**argv) {
 	}
 	int	port;
 	port = atoi(argv[1]);
-	if (port <= 0) {
+	std::string str = argv[1];
+	for (size_t i = 0; i < str.length(); i++) {
+		if (!isdigit(str[i])) {
+			std::cerr << Colors::returnColored(RED, "Error: Port number cannot be somthing rather than digit", NEWLINE);
+			return (true);
+		}
+	}
+	if (port <= 2000 || port >= 65000) {
 		std::cerr << Colors::returnColored(YELLOW, "Warning: port number is invalid or occupied please \
 					use another one above 2000", NEWLINE);
 					return (true);
 	}
-	std::ostringstream	oss;
-	oss << argv[2];
-	if (oss.str() == "") {
+	std::string	oss;
+	oss = argv[2];
+	for (size_t i = 0; i < oss.length(); i++) {
+		if (!isprint(oss[i]) || (oss[i] >= 9 && oss[i] <= 13) || oss[i] == ' ') {
+			std::cerr << Colors::returnColored(RED, "Error: Password cannot be something not printable", NEWLINE);
+			return (true);
+		}
+	}
+	if (oss.empty()) {
 		std::cerr << Colors::returnColored(YELLOW, "Warning: Password cannot be empty", NEWLINE);
 		return (true);
 	}
@@ -40,18 +54,16 @@ static bool	worngArgs(int argc, char**argv) {
 
 int	main(int argc, char **argv) {
 	// default port and password
-	int	port = 5555;
-	std::string	password = "pass123";
+	int	port;
+	std::string	password;
 
 	// checking all args and other
 	if (worngArgs(argc, argv)) {
-		std::cerr << Colors::returnColored(RED, "Error: Wrong arguments! Starting with default server \
-config", NEWLINE);
+		std::cerr << Colors::returnColored(RED, "Error: Wrong arguments! ", NEWLINE);
 		return (1);
-	} else {
-		port = atoi(argv[1]);
-		password = argv[2];
 	}
+	port = atoi(argv[1]);
+	password = argv[2];
 	// Constructing the basic server class
 	Server	server(port, password);
 	// runing the server and doing all the stuff

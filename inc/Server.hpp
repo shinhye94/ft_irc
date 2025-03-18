@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:10:00 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/16 05:39:32 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/18 03:52:22 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include "Utils.hpp"
 #include "Client.hpp"
+
+
 
 
 class Server {
@@ -26,6 +28,7 @@ class Server {
 		int										_serverSocket;	// a socket representing the server
 		int										_portNumber;		// a port to listen to
 		std::string								_serverPassword;	// a password to authenteficate users
+		std::string								_currentCommand;
 
 		std::set<Client*>						_clients;
 		std::map<int, Client*>					_clientMap;
@@ -80,11 +83,15 @@ class Server {
 		bool									isClientAuthenticated( Client* client );
 		bool									authenticateClient(const std::string& passwordAttempt );
 
+		// void									signals(void);
+
 	public:
 												Server( int port, const std::string& password );
 												~Server( void );
 
 		void									run( void );
 };
+
+
 
 #endif

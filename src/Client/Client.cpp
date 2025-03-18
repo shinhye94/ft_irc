@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 13:21:59 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/18 00:53:58 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/18 06:52:14 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,25 @@ const std::string& 				Client::getUsername( void ) const {
 	return (this->_username);
 }
 
-void							Client::setUsername(const std::string& username) {
+const std::string& 				Client::getHostname( void ) const {
+	return (this->_hostname);
+}
+
+const std::string& 				Client::getRealname( void ) const {
+	return (this->_realname);
+}
+
+
+const std::string& 				Client::getServername( void ) const {
+	return (this->_servername);
+}
+
+
+void							Client::setNamesAndStuff(const std::string& username, const std::string& hostname, const std::string& servername, const std::string& realname) {
 	this->_username = username;
+	this->_hostname = hostname;
+	this->_servername = servername;
+	this->_realname = realname;
 }
 
 bool							Client::isAuthenticated( void ) const {
@@ -66,4 +83,20 @@ bool							Client::isToBeRemoved() const {
 
 void							Client::setRemoveSituation(bool removeSituation) {
 	this->_toBeRemoved = removeSituation;
+}
+
+std::string						Client::getBuffer( void ) {
+	return (this->_inputBuffer);
+}
+
+void							Client::setBuffer(const std::string& buffer) {
+	_inputBuffer = buffer;
+}
+
+void							Client::clearBuffer( void ) {
+	_inputBuffer.erase();
+}
+
+void							Client::appendToBuffer( const std::string& data) {
+	_inputBuffer += data;
 }

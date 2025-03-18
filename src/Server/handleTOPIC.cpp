@@ -6,7 +6,7 @@
 /*   By: bmetehri <bmetehri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 21:11:11 by bmetehri          #+#    #+#             */
-/*   Updated: 2025/03/15 21:19:06 by bmetehri         ###   ########.fr       */
+/*   Updated: 2025/03/18 03:48:30 by bmetehri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ void	Server::handleTOPIC(Client* client, const std::vector<std::string>& params)
 		}
 		newTopic = Utils::trimString(newTopic);
 		channel.setTopic(newTopic);
-		broadcastToChannel(channelName, ":" + getClientNickname(client) + " TOPIC " + channelName + " :" + newTopic + "\n"); // Send TOPIC to all in channel
+		std::string nickname = getClientNickname(client);
+		std::string username = client->getUsername();
+		std::string hostname = client->getHostname();
+		broadcastToChannel(channelName, ":" + nickname + "!" + username + "@" + hostname + " TOPIC "+ channelName + " :" + _currentCommand + "\r\n"); // Send TOPIC to all in channel
 		Debug::channelEvent("Topic changed", &channel, client);
 		Debug::commandHandling("TOPIC", "Topic changed to: " + newTopic);
 	}
